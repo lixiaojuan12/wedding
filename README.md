@@ -3,8 +3,10 @@
 > 体验二维码
 
 ![小程序优化后效果](https://images.gitee.com/uploads/images/2019/1106/161213_885f9c67_1937666.png "pic_010.png")
+婚礼小程序转化版
 
 ![日记小程序](https://images.gitee.com/uploads/images/2019/1106/161339_19293632_1937666.jpeg "1570776962(1).jpg")
+日记小程序
 
 > 要定制小程序的加本人微信：huangbin910419
 
