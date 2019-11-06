@@ -1,5 +1,9 @@
 # wedding
 
+> 体验二维码
+
+![小程序优化后效果](https://images.gitee.com/uploads/images/2019/1106/161213_885f9c67_1937666.png "pic_010.png")
+
 > A Mpvue project
 
 ## Build Setup
