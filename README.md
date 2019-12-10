@@ -6,7 +6,7 @@
 ![小程序优化后效果](https://images.gitee.com/uploads/images/2019/1106/161213_885f9c67_1937666.png "pic_010.png")
 
 
-日记小程序：
+> 日记小程序：
 
 ![日记小程序](https://images.gitee.com/uploads/images/2019/1106/161339_19293632_1937666.jpeg "1570776962(1).jpg")
 
