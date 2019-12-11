@@ -1,15 +1,9 @@
-# wedding
+# 婚礼邀请函
 
 > 体验二维码
 婚礼小程序转化版：
 
 ![小程序优化后效果](https://images.gitee.com/uploads/images/2019/1106/161213_885f9c67_1937666.png "pic_010.png")
-
-
-> 日记小程序：
-
-![日记小程序](https://images.gitee.com/uploads/images/2019/1106/161339_19293632_1937666.jpeg "1570776962(1).jpg")
-
 
 
 > 如果觉得小程序上任何功能点对你有帮助，请不要吝啬你的star
@@ -33,3 +27,8 @@ npm install
 # serve with hot reload at localhost:8080
 npm run dev
 ```
+
+## 最后给大家体验一下日记小程序
+> 微信扫描下方二维码体验：
+
+![日记小程序](https://images.gitee.com/uploads/images/2019/1106/161339_19293632_1937666.jpeg "1570776962(1).jpg")
