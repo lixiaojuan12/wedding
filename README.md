@@ -15,7 +15,7 @@
 ## 以下内容为邀请函实现的文章以及注意事项，请认真查阅：
 
 ### 大家不要直接跑本项目，需要开通云开发，需要建立集合，上手前记得先熟悉云开发文档
-### 结合掘金文章[项目讲解](https://juejin.im/post/5c341e1d6fb9a049f66c4876#heading-5)一起使用
+### 结合CSDN文章[项目讲解](https://blog.csdn.net/qq_36070288/article/details/85986144)或掘金文章[项目讲解](https://juejin.im/post/5c341e1d6fb9a049f66c4876#heading-5)一起使用
 ### 禁止本源码作为商业用途
 
 ``` bash
