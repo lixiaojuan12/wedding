@@ -18,7 +18,24 @@ export function formatTime (date) {
   return `${t1} ${t2}`
 }
 
+export function getImage (name) {
+  return new Promise((resolve, reject) => {
+    const db = wx.cloud.database()
+    const image = db.collection('imgList')
+    image.where({
+      name
+    }).get().then(res => {
+      console.log(res, 'getimage')
+      return resolve(res.data[0].filePath)
+    }).catch(err => {
+      console.error(err)
+      return reject(err)
+    })
+  })
+}
+
 export default {
   formatNumber,
-  formatTime
+  formatTime,
+  getImage
 }

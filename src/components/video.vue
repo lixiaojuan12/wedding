@@ -1,6 +1,7 @@
 <template>
     <div class="section">
-        <video id="myVideo" src="视频资源地址" :danmu-list="danmuList" enable-danmu danmu-btn controls poster="视频封面地址"></video>
+        <video id="myVideo1" src="https://www.w3school.com.cn/example/html5/mov_bbb.mp4" :danmu-list="danmuList" enable-danmu danmu-btn controls poster="视频封面地址"></video>
+        <video id="myVideo" src="http://42.193.200.182/phone/videoy.mp4" :danmu-list="danmuList" enable-danmu danmu-btn :controls="true" poster="视频封面地址"></video>
         <div class="btn-area">
             <input @blur="bindInputBlur" placeholder="请输入临时弹幕，真实弹幕来自留言" placeholder-style="color:#bbb"/>
             <button @tap="bindSendDanmu">点击生成临时弹幕</button>

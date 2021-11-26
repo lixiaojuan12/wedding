@@ -1,28 +1,33 @@
 <template>
     <div class="index">
-        <div class="bg-swiper">
+<!-- <button @tap="handleUpload">上传</button> -->
+<!-- <img :src="ssss" alt=""> -->
+        <!-- <div class="bg-swiper">
             <index-swiper :list="list"></index-swiper>
-        </div>
+        </div> -->
         <image class="inv" src="../../static/images/inv.png"/>
-        <div class="bg_music" v-if="isPlay" @tap="audioPlay">
+        <div class="video-content">
+        <video id="myVideo" src="cloud://clound-env-5gd8uzdd31871ce7.636c-clound-env-5gd8uzdd31871ce7-1308481584/videonew.mp4"  :controls="true" poster="视频封面地址"></video>
+        </div>
+        <!-- <div class="bg_music" v-if="isPlay" @tap="audioPlay">
             <image src="../../static/images/music_icon.png" class="musicImg music_icon"/>
             <image src="../../static/images/music_play.png" class="music_play pauseImg"/>
         </div>
         <div class="bg_music" v-else @tap="audioPlay">
             <image src="../../static/images/music_icon.png" class="musicImg"/>
             <image src="../../static/images/music_play.png" class="music_play playImg"/>
-        </div>
-        <div class="info" :animation="animationData">
+        </div> -->
+        <!-- <div class="info" :animation="animationData">
             <div class="content">
-                <h1>Mr.黄 & Miss.梅</h1>
-                <p>谨定于 2019年2月2日 （星期六）中午12:00</p>
-                <p>农历 腊月二十八 中午十二点整 举办婚礼</p>
-                <p>席设：黄梅县天下禅大酒店锦园三厅</p>
-                <p>地址：黄冈市黄梅县黄梅大道777号</p>
+                <h1>Mr.高 & Miss.李</h1>
+                <p>谨定于 2021年12月21日 （星期日）中午12:00</p>
+                <p>农历 冬月十六 中午十二点整 举办婚礼</p>
+                <p>席设：石家庄市三江味道二楼</p>
+                <p>地址：石家庄市裕华区开发区闽江道</p>
                 <image src="../../static/images/we.png" class="img_footer"/>
             </div>
-        </div>
-        <audio id="myAudio" :src="audioUrl" autoplay loop></audio>
+        </div> -->
+        <!-- <audio id="myAudio" :src="audioUrl" autoplay loop></audio> -->
     </div>
 </template>
 
@@ -46,10 +51,21 @@ export default {
     const that = this
     that.audioCtx = wx.createAudioContext('myAudio')
     that.isPlay = true
-    that.getMusicUrl()
+    // that.getMusicUrl()
   },
 
   methods: {
+    handleUpload () {
+      let list = []
+      for (var i = 1; i < 89; i++) {
+        list.push(`cloud://clound-env-5gd8uzdd31871ce7.636c-clound-env-5gd8uzdd31871ce7-1308481584/${i}.jpg`)
+      }
+      wx.cloud.database().collection('indexBanner').add({
+        data: {
+          indexBanner: list
+        }
+      })
+    },
     audioPlay () {
       const that = this
       if (that.isPlay) {
@@ -62,14 +78,12 @@ export default {
         tools.showToast('背景音乐已开启~')
       }
     },
-
     getList () {
       const that = this
       const db = wx.cloud.database()
       const banner = db.collection('banner')
       banner.get().then(res => {
         that.list = res.data[0].bannerList
-        console.log(that.list)
       })
     },
 
@@ -119,6 +133,12 @@ export default {
 .index
   height 100%
   position relative
+  .video-content
+    width 100%
+    height 100%
+    #myVideo
+      width 100%
+      height 100%
   .img
     width 100%
     height 100%

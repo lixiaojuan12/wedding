@@ -5,7 +5,7 @@ Vue.config.productionTip = false
 App.mpType = 'app'
 
 wx.cloud.init({
-  env: '云开发环境ID'
+  env: 'clound-env-5gd8uzdd31871ce7'
 })
 
 const app = new Vue(App)

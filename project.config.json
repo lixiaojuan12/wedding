@@ -10,7 +10,7 @@
 	},
 	"miniprogramRoot": "dist/wx/",
 	"compileType": "miniprogram",
-	"appid": "小程序appID",
+	"appid": "wx02a0fe585bc058f2",
 	"projectname": "photo",
 	"cloudfunctionRoot": "static/functions/",
 	"condition": {

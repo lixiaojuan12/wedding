@@ -29,7 +29,9 @@ export default {
       const that = this
       const db = wx.cloud.database()
       const banner = db.collection('indexBanner')
+      console.log(banner)
       banner.get().then(res => {
+        console.log(res)
         that.list = res.data[0].indexBanner
       })
     }

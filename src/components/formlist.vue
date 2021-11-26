@@ -32,7 +32,6 @@ export default {
   watch: {
     formList (newValue, oldValue) {
       if (newValue) {
-        // console.log(newValue)
       }
     }
   }

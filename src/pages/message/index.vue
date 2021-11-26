@@ -19,8 +19,8 @@
             <p class="place-end"></p>
         </scroll-view>
         <div class="bottom">
-            <button class="left" lang="zh_CN" open-type="getUserInfo" @getuserinfo="toMessage">说点啥吧</button>
-            <button class="right" @tap="toForm">我要出席</button> 
+            <button class="left" lang="zh_CN" @tap="sendMessageMsg" >说点啥吧</button>
+            <button class="right" @tap="toForm">我要出席</button>
         </div>
         <div class="dialog" v-show="isOpen">
             <textarea focus="true" maxlength="80" class="desc" placeholder="在这里输入您想要说的话" name="textarea" placeholder-style="color:#ccc;" v-model="desc"/>
@@ -29,9 +29,9 @@
                 <button class="right" @tap="cancel">取消</button>
             </div>
         </div>
-        <div class="video-dialog" @tap="toVideo">
+        <!-- <div class="video-dialog" @tap="toVideo">
             <image src="../../static/images/video1.png"/>
-        </div>
+        </div> -->
         <div class="form-dialog" @tap="lookList">
             <image src="../../static/images/form.png"/>
         </div>
@@ -81,15 +81,31 @@ export default {
   },
 
   methods: {
-    toMessage (e) {
-      const that = this
-      if (e.target.errMsg === 'getUserInfo:ok') {
-        // that.isOpen = true
-        wx.getUserInfo({
-          success: function (res) {
-            that.userInfo = res.userInfo
-            that.isOpen = true
-            that.getOpenId()
+    /**
+     * 留言
+     * 1. 首先判断用户是否已经授权
+     * 2. 如果已经授权则直接可以发送留言
+     * 3. 如果没有授权则需要授权
+     */
+    sendMessageMsg (e) {
+      let lastOpenId = wx.getStorageSync('openId')
+      if (lastOpenId.length > 0) {
+        let userInfo = wx.getStorageSync('userInfo')
+        this.userInfo = userInfo
+        this.isOpen = true
+      } else {
+        wx.getUserProfile({
+          lang: 'zh_CN',
+          desc: '获取用户信息',
+          success: res => {
+            if (res.errMsg === 'getUserProfile:ok') {
+              this.userInfo = res.userInfo
+              this.isOpen = true
+              this.getOpenId()
+            }
+          },
+          fail: err => {
+            console.error(err, 'err')
           }
         })
       }
@@ -157,10 +173,14 @@ export default {
 
     getMessageList () {
       const that = this
+      wx.showLoading({
+        title: '获取留言列表'
+      })
       wx.cloud.callFunction({
         name: 'messageList',
         data: {}
       }).then(res => {
+        wx.hideLoading()
         that.messageList = res.result.data.reverse()
       })
     },
@@ -224,6 +244,9 @@ export default {
 
     lookList () {
       const that = this
+      wx.showLoading({
+        title: '加载留言中'
+      })
       that.isFormlist = true
       that.getFromlist()
     },
@@ -239,6 +262,7 @@ export default {
         name: 'presentList',
         data: {}
       }).then(res => {
+        wx.hideLoading()
         that.formList = res.result.data.reverse()
       })
     }

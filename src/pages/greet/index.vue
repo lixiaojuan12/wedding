@@ -12,40 +12,92 @@
         </scroll-view>
         <p class="count">已收到{{userList.length}}位好友送来的祝福</p>
         <div class="bottom">
-            <button class="left" lang="zh_CN" open-type="getUserInfo" @getuserinfo="sendGreet">送上祝福</button>
-            <button class="right" open-type="share">分享喜悦</button> 
+            <button class="left" lang="zh_CN" @tap="sendGreetUserInfoProfile"  v-if="canIUseGetUserProfile">送上祝福</button>
+            <button class="left" lang="zh_CN" open-type="getUserInfo" @getuserinfo="sendGreetUserInfo" v-else>送上祝福</button>
+            <!-- <button class="right" @tap="handleGift">
+              <img class="gift-img" :src="giftImg" alt="">
+            </button> -->
+            <button class="right" open-type="share">
+             分享喜悦
+              <!-- <img class="share-img" :src="shareImg" alt=""> -->
+            </button>
         </div>
+        <v-dialog ref="dialog"/>
     </div>
 </template>
 
 <script>
 import tools from 'common/js/h_tools'
+import vDialog from './dialog.vue'
 export default {
   name: 'Greet',
+  components: {vDialog},
   data () {
     return {
       userList: [],
       openId: '',
-      userInfo: ''
+      userInfo: '',
+      canIUseGetUserProfile: true
     }
   },
   onShow () {
     const that = this
     that.getUserList()
   },
+  onLoad () {
+    if (!wx.getUserProfile) {
+      this.canIUseGetUserProfile = false
+    }
+  },
   methods: {
-    sendGreet (e) {
-      const that = this
-      if (e.target.errMsg === 'getUserInfo:ok') {
-        wx.getUserInfo({
-          success: function (res) {
-            that.userInfo = res.userInfo
-            that.getOpenId()
-          }
-        })
+    /**
+     * 获取用户信息使用getUserProfile
+     */
+    sendGreetUserInfoProfile (e) {
+      let lastOpenId = wx.getStorageSync('openId')
+      if (lastOpenId.length > 0) {
+        tools.showToast('您已经送过祝福了~')
+        return
       }
+      wx.getUserProfile({
+        lang: 'zh_CN',
+        desc: '获取用户信息',
+        success: res => {
+          if (res.errMsg === 'getUserProfile:ok') {
+            this.userInfo = res.userInfo
+            wx.setStorageSync('userInfo', res.userInfo)
+            wx.showLoading({
+              title: '送祝福'
+            })
+            this.getOpenId()
+          }
+        },
+        fail: err => {
+          console.error(err, 'err')
+        }
+      })
     },
-
+    /**
+     * 获取用户信息使用getUserInfo
+     */
+    sendGreetUserInfo () {
+      let lastOpenId = wx.getStorageSync('openId')
+      if (lastOpenId.length > 0) {
+        tools.showToast('您已经送过祝福了~')
+        return
+      }
+      wx.getUserInfo({
+        provider: 'weixin',
+        lang: 'zh_CN',
+        success: res => {
+          this.userInfo = res.userInfo
+          this.getOpenId()
+        },
+        fail: err => {
+          console.error(err, 'err')
+        }
+      })
+    },
     addUser () {
       const that = this
       const db = wx.cloud.database()
@@ -66,6 +118,7 @@ export default {
         data: {}
       }).then(res => {
         that.openId = res.result.openid
+        wx.setStorageSync('openId', res.result.openid)
         that.getIsExist()
       })
     },
@@ -80,6 +133,7 @@ export default {
         if (res.data.length === 0) {
           that.addUser()
         } else {
+          wx.hideLoading()
           tools.showToast('您已经送过祝福了~')
         }
       })
@@ -87,12 +141,23 @@ export default {
 
     getUserList () {
       const that = this
+      wx.showLoading({
+        title: '获取用户列表'
+      })
       wx.cloud.callFunction({
         name: 'userList',
         data: {}
       }).then(res => {
+        wx.hideLoading()
         that.userList = res.result.data.reverse()
       })
+    },
+    /**
+     * 获取礼物
+     * */
+    handleGift () {
+      console.log('sss')
+      this.$refs.dialog.open()
     }
   }
 }
@@ -145,7 +210,6 @@ export default {
         left 0
         background rgba(255, 255, 255, 0.5)
         display flex
-        justify-content center
         align-items center
         width 100%
         .left
@@ -163,6 +227,43 @@ export default {
             color #fff
             width 300rpx
             background #2CA6F9
+            // width 40px
+            // height 40px
+            // padding 0
+            // background transparent
+            // margin-left 10px
+            // margin-right 30rpx
+        .right::after
+            border none
+        @-webkit-keyframes icon
+          0%
+            opacity: 0.8;
+            transform: translate(0,0);
+          20%
+            opacity: 1;
+            transform: translate(0,-5px);
+          30%
+            opacity: 1;
+            transform: translate(0,5px);
+          40%
+            opacity: 1;
+            transform: translate(0,-5px);
+          50%
+            opacity: 1;
+            transform: translate(0,5px);
+          50%
+            opacity: 1;
+            transform: translate(0,0);
+          100%
+            opacity: 0.8;
+            transform: translate(0,0);
+        .gift-img
+          width 50px
+          height 45px
+          animation:  icon 3s linear infinite;
+        .share-img
+          width 40px
+          height 40px
     .count
         height 60rpx
         line-height 60rpx
