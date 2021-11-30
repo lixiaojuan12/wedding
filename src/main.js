@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './App'
-
+import xss from 'xss'
+Vue.prototype.xss = xss
 Vue.config.productionTip = false
 App.mpType = 'app'
 

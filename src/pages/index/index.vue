@@ -7,27 +7,10 @@
         </div> -->
         <image class="inv" src="../../static/images/inv.png"/>
         <div class="video-content">
-        <video id="myVideo" src="cloud://clound-env-5gd8uzdd31871ce7.636c-clound-env-5gd8uzdd31871ce7-1308481584/videonew.mp4"  :controls="true" poster="视频封面地址"></video>
+        <template v-if="isDisplay">
+          <video id="myVideo" :src="videoSrc"  :controls="true" poster="视频封面地址"></video>
+        </template>
         </div>
-        <!-- <div class="bg_music" v-if="isPlay" @tap="audioPlay">
-            <image src="../../static/images/music_icon.png" class="musicImg music_icon"/>
-            <image src="../../static/images/music_play.png" class="music_play pauseImg"/>
-        </div>
-        <div class="bg_music" v-else @tap="audioPlay">
-            <image src="../../static/images/music_icon.png" class="musicImg"/>
-            <image src="../../static/images/music_play.png" class="music_play playImg"/>
-        </div> -->
-        <!-- <div class="info" :animation="animationData">
-            <div class="content">
-                <h1>Mr.高 & Miss.李</h1>
-                <p>谨定于 2021年12月21日 （星期日）中午12:00</p>
-                <p>农历 冬月十六 中午十二点整 举办婚礼</p>
-                <p>席设：石家庄市三江味道二楼</p>
-                <p>地址：石家庄市裕华区开发区闽江道</p>
-                <image src="../../static/images/we.png" class="img_footer"/>
-            </div>
-        </div> -->
-        <!-- <audio id="myAudio" :src="audioUrl" autoplay loop></audio> -->
     </div>
 </template>
 
@@ -43,15 +26,17 @@ export default {
     return {
       isPlay: true,
       list: [],
+      isDisplay: false,
       audioCtx: '',
-      audioUrl: ''
+      audioUrl: '',
+      videoSrc: ''
     }
   },
   onShow () {
     const that = this
     that.audioCtx = wx.createAudioContext('myAudio')
     that.isPlay = true
-    // that.getMusicUrl()
+    this.isDisplayVideo()
   },
 
   methods: {
@@ -95,6 +80,14 @@ export default {
         that.audioUrl = res.data[0].musicUrl
         that.audioCtx.play()
         that.getList()
+      })
+    },
+    isDisplayVideo () {
+      const db = wx.cloud.database()
+      const state = db.collection('status')
+      state.get().then(res => {
+        this.isDisplay = res.data[0].isDisplay
+        this.videoSrc = res.data[0].address
       })
     }
   },

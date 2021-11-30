@@ -1,5 +1,6 @@
 <template>
     <div class="message">
+      <template v-if="isDisplay">
         <scroll-view
             scroll-y
             @scroll="scroll"
@@ -18,6 +19,8 @@
             </div>
             <p class="place-end"></p>
         </scroll-view>
+      </template>
+
         <div class="bottom">
             <button class="left" lang="zh_CN" @tap="sendMessageMsg" >说点啥吧</button>
             <button class="right" @tap="toForm">我要出席</button>
@@ -69,7 +72,8 @@ export default {
       isForm: false,
       isVideo: false,
       isFormlist: false,
-      formList: []
+      formList: [],
+      isDisplay: false
     }
   },
   onShow () {
@@ -78,6 +82,7 @@ export default {
     that.isForm = false
     that.isFormlist = false
     that.getMessageList()
+    this.isDisplayVideo()
   },
 
   methods: {
@@ -264,6 +269,13 @@ export default {
       }).then(res => {
         wx.hideLoading()
         that.formList = res.result.data.reverse()
+      })
+    },
+    isDisplayVideo () {
+      const db = wx.cloud.database()
+      const state = db.collection('status')
+      state.get().then(res => {
+        this.isDisplay = res.data[0].isDisplay
       })
     }
   }

@@ -1,8 +1,7 @@
 <template>
     <div class="map">
         <image mode="aspectFit" class="head-img" src="../../static/images/t1.png"/>
-        <map class="content" id="map" longitude="114.600321" latitude="38.02801" :markers="markers" scale="18" @tap="toNav">
-          <!-- 114.600321,38.02801 -->
+        <map class="content" id="map" longitude="114.600626" latitude="38.028003" :markers="markers" scale="15" @tap="toNav">
         </map>
         <div class="call">
             <div class="left" @tap="linkHe">
@@ -38,9 +37,9 @@ export default {
   methods: {
     toNav () {
       wx.openLocation({
-        latitude: 30.08059,
-        longitude: 115.93027,
-        scale: 18
+        latitude: 38.028003,
+        longitude: 114.600626,
+        scale: 15
       })
     },
 

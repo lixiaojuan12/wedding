@@ -19,7 +19,8 @@
   "dependencies": {
     "mpvue": "1.0.11",
     "vuex": "^3.0.1",
-    "wx-server-sdk": "^2.5.3"
+    "wx-server-sdk": "^2.5.3",
+    "xss": "^1.0.10"
   },
   "devDependencies": {
     "mpvue-loader": "^1.1.2",
